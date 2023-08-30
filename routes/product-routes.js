@@ -10,8 +10,14 @@ router.get("/", (req, res, next) => {
 
 // Route for create a product
 router.post("/", (req, res, next) => {
+  const product = {
+    name: req.body.name,
+    price: req.body.price,
+  };
+
   res.status(201).json({
     Message: `Product created`,
+    Product: product,
   });
 });
 

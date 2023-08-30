@@ -6,9 +6,11 @@ const morgan = require("morgan"); // use morgan middleware for logging request &
 const productRoutes = require("./routes/product-routes");
 const orderRoutes = require("./routes/order-routes");
 const { error } = require("console");
+const databaseMiddleware = require("./middleware/database");
 
 app.use(express.json());
 app.use(morgan("dev"));
+app.use(databaseMiddleware);
 
 const port = process.env.PORT || 8000;
 
