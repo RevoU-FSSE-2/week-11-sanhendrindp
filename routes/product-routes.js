@@ -5,9 +5,18 @@ const mongoose = require("mongoose");
 
 // Route for get all products
 router.get("/", (req, res, next) => {
-  res.status(200).json({
-    Message: `Get all products`,
-  });
+  Product.find()
+    .exec()
+    .then((docs) => {
+      console.log(docs);
+      res.status(200).json(docs);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        Error: err,
+      });
+    });
 });
 
 // Route for create a product
@@ -22,50 +31,82 @@ router.post("/", (req, res, next) => {
     .save()
     .then((result) => {
       console.log(result);
+      res.status(201).json({
+        Message: `Product created`,
+        Product: result,
+      });
     })
-    .catch((err) => console.log(err));
-
-  res.status(201).json({
-    Message: `Product created`,
-    Product: product,
-  });
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        Error: err,
+      });
+    });
 });
 
 // Route for get a product by id
 router.get("/:id", (req, res, next) => {
   const id = req.params.id;
 
-  if (id === "special") {
-    res.status(200).json({
-      Message: `You get special id`,
-      ID: id,
+  Product.findById(id)
+    .exec()
+    .then((doc) => {
+      console.log(doc);
+
+      // If there is a doc, status 200, else 404 not found
+      if (doc) {
+        res.status(200).json({
+          Message: `Product for ID ${id} found`,
+          Product: doc,
+        });
+      } else {
+        res.status(404).json({
+          Message: `No product found for provided ID`,
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        Error: err,
+      });
     });
-  } else {
-    res.status(200).json({
-      Message: `You passed special id`,
-      ID: id,
-    });
-  }
 });
 
 // Route for update a product
 router.patch("/:id", (req, res, next) => {
   const id = req.params.id;
+  const { name, price } = req.body;
 
-  res.status(200).json({
-    Message: `Product updated`,
-    ID: id,
-  });
+  Product.updateOne({ _id: id }, { $set: { name, price } })
+    .exec()
+    .then((result) => {
+      console.log(result);
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(200).json({
+        Error: err,
+      });
+    });
 });
 
 // Route for delete a product
 router.delete("/:id", (req, res, next) => {
   const id = req.params.id;
 
-  res.status(200).json({
-    Message: `Product deleted`,
-    ID: id,
-  });
+  Product.deleteOne({ _id: id })
+    .exec()
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        Error: err,
+      });
+    });
 });
 
 // Export
