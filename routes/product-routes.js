@@ -6,13 +6,27 @@ const mongoose = require("mongoose");
 // Route for get all products
 router.get("/", (req, res, next) => {
   Product.find()
+    .select("_id name price")
     .exec()
     .then((docs) => {
       console.log(docs);
-      res.status(200).json({
+      const response = {
         Message: `Success get all products`,
-        Products: docs,
-      });
+        Count: docs.length,
+        Products: docs.map((doc) => {
+          return {
+            _id: doc._id,
+            name: doc.name,
+            price: doc.price,
+            request: {
+              type: "GET",
+              url: "http://localhost:3000/products/" + doc._id,
+            },
+          };
+        }),
+      };
+
+      res.status(200).json(response);
     })
     .catch((err) => {
       console.log(err);
@@ -35,8 +49,16 @@ router.post("/", (req, res, next) => {
     .then((result) => {
       console.log(result);
       res.status(201).json({
-        Message: `Product created`,
-        Product: result,
+        Message: `Product created successfully`,
+        Product: {
+          _id: result._id,
+          name: result.name,
+          price: result.price,
+          request: {
+            type: "GET",
+            url: "http://localhost:3000/products/" + result._id,
+          },
+        },
       });
     })
     .catch((err) => {
@@ -52,6 +74,7 @@ router.get("/:id", (req, res, next) => {
   const id = req.params.id;
 
   Product.findById(id)
+    .select("_id name price")
     .exec()
     .then((doc) => {
       console.log(doc);
@@ -85,7 +108,14 @@ router.patch("/:id", (req, res, next) => {
     .exec()
     .then((result) => {
       console.log(result);
-      res.status(200).json(result);
+      res.status(200).json({
+        Message: `Product for ID ${id} updated`,
+        // Update: result,
+        Product: {
+          type: "GET",
+          url: "http://localhost:3000/products/" + id,
+        },
+      });
     })
     .catch((err) => {
       console.log(err);
@@ -102,7 +132,10 @@ router.delete("/:id", (req, res, next) => {
   Product.deleteOne({ _id: id })
     .exec()
     .then((result) => {
-      res.status(200).json(result);
+      res.status(200).json({
+        Message: "Product deleted successfully",
+        Result: result,
+      });
     })
     .catch((err) => {
       console.log(err);
