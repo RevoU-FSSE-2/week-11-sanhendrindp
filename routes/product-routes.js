@@ -9,7 +9,10 @@ router.get("/", (req, res, next) => {
     .exec()
     .then((docs) => {
       console.log(docs);
-      res.status(200).json(docs);
+      res.status(200).json({
+        Message: `Success get all products`,
+        Products: docs,
+      });
     })
     .catch((err) => {
       console.log(err);
