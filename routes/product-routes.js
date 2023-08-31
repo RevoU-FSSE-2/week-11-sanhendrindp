@@ -2,11 +2,21 @@ const express = require("express");
 const router = express.Router();
 const Product = require("../models/product-model");
 const mongoose = require("mongoose");
+const multer = require("multer");
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./uploads/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+const upload = multer({ storage: storage });
 
 // Route for get all products
 router.get("/", (req, res, next) => {
   Product.find()
-    .select("_id name price")
+    .select("_id name price productImage")
     .exec()
     .then((docs) => {
       console.log(docs);
@@ -18,6 +28,7 @@ router.get("/", (req, res, next) => {
             _id: doc._id,
             name: doc.name,
             price: doc.price,
+            productImage: doc.productImage,
             request: {
               type: "GET",
               url: "http://localhost:3000/products/" + doc._id,
@@ -37,12 +48,21 @@ router.get("/", (req, res, next) => {
 });
 
 // Route for create a product
-router.post("/", (req, res, next) => {
+router.post("/", upload.single("productImage"), (req, res, next) => {
+  console.log(req.file);
+
   const product = new Product({
     _id: new mongoose.Types.ObjectId(),
     name: req.body.name,
     price: req.body.price,
+    // productImage: req.file.path,
   });
+
+  // Upload image is optional
+  if (req.file) {
+    product.productImage = req.file.path;
+  }
+
   // Store to database
   product
     .save()
@@ -54,6 +74,7 @@ router.post("/", (req, res, next) => {
           _id: result._id,
           name: result.name,
           price: result.price,
+          productImage: result.productImage,
           request: {
             type: "GET",
             url: "http://localhost:3000/products/" + result._id,
@@ -74,7 +95,7 @@ router.get("/:id", (req, res, next) => {
   const id = req.params.id;
 
   Product.findById(id)
-    .select("_id name price")
+    .select("_id name price productImage")
     .exec()
     .then((doc) => {
       console.log(doc);
@@ -110,7 +131,6 @@ router.patch("/:id", (req, res, next) => {
       console.log(result);
       res.status(200).json({
         Message: `Product for ID ${id} updated`,
-        // Update: result,
         Product: {
           type: "GET",
           url: "http://localhost:3000/products/" + id,

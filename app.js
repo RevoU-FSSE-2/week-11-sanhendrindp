@@ -14,6 +14,7 @@ mongoose.connect(process.env.MONGO_URI);
 // Middleware
 app.use(express.json());
 app.use(morgan("dev"));
+app.use("/uploads", express.static("uploads"));
 
 const port = process.env.PORT || 8000;
 
