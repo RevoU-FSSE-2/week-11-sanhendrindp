@@ -3,10 +3,11 @@ dotenv.config();
 const express = require("express");
 const app = express();
 const morgan = require("morgan"); // use morgan middleware for logging request & respond
-const productRoutes = require("./routes/product-routes");
-const orderRoutes = require("./routes/order-routes");
 const { error } = require("console");
 const mongoose = require("mongoose");
+const productRoutes = require("./routes/product-routes");
+const orderRoutes = require("./routes/order-routes");
+const userRoutes = require("./routes/user-routes");
 
 // Connect to mongodb with mongoose
 mongoose.connect(process.env.MONGO_URI);
@@ -21,6 +22,7 @@ const port = process.env.PORT || 8000;
 // Routes
 app.use("/products", productRoutes);
 app.use("/orders", orderRoutes);
+app.use("/users", userRoutes);
 
 // ============================= LISTEN ===============================
 
