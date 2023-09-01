@@ -9,6 +9,16 @@ servers:
   # - url: https://week-10-sanhendrindp-production.up.railway.app/
   #   description: For public server
 paths:
+  /:
+    get:
+      summary: Root endpoint
+      responses:
+        "200":
+          description: "Welcome message"
+          content:
+            text/plain:
+              schema:
+                type: string
   /users/signup:
     post:
       summary: Create a user
