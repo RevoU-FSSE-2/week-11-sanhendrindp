@@ -8,6 +8,14 @@ const mongoose = require("mongoose");
 const productRoutes = require("./routes/product-routes");
 const orderRoutes = require("./routes/order-routes");
 const userRoutes = require("./routes/user-routes");
+const swaggerUi = require("swagger-ui-express");
+const yaml = require("yaml");
+const fs = require("fs");
+const OpenApiValidator = require("express-openapi-validator");
+
+const openApiPath = "./docs/openapi.yaml";
+const file = fs.readFileSync(openApiPath, "utf-8");
+const swaggerDocument = yaml.parse(file);
 
 // Connect to mongodb with mongoose
 mongoose.connect(process.env.MONGO_URI);
@@ -16,6 +24,13 @@ mongoose.connect(process.env.MONGO_URI);
 app.use(express.json());
 app.use(morgan("dev"));
 app.use("/uploads", express.static("uploads"));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use(
+  OpenApiValidator.middleware({
+    apiSpec: openApiPath,
+    validateRequest: true,
+  })
+);
 
 const port = process.env.PORT || 8000;
 

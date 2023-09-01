@@ -1,6 +1,6 @@
 const checkRole = (allowedRoles) => {
   return (req, res, next) => {
-    const userRole = req.userData.role; // Store user data in req.userData
+    const userRole = req.userData.role; // user data is store in req.userData
 
     if (allowedRoles.includes(userRole)) {
       // User has the required role, proceed to the route handler
