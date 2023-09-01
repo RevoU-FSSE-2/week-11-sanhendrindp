@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const User = require("../models/user-model");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 // Route for create user
 router.post("/signup", (req, res, next) => {
@@ -43,6 +44,62 @@ router.post("/signup", (req, res, next) => {
           }
         });
       }
+    });
+});
+
+// Route for login user
+router.post("/login", (req, res, next) => {
+  const { email, password } = req.body;
+
+  User.findOne({ email })
+    .exec()
+    .then((user) => {
+      if (!user) {
+        // No user with the provided email found
+        return res.status(401).json({
+          Message: "Email is incorrect",
+        });
+      }
+
+      // Compare the provided password with the stored hashed password
+      bcrypt.compare(password, user.password, (err, result) => {
+        if (err) {
+          // Error when password is compare
+          return res.status(401).json({
+            Message: "Login failed. Email or password is incorrect",
+          });
+        }
+
+        if (result) {
+          // If password correct
+          const token = jwt.sign(
+            {
+              userId: user._id,
+              email: user.email,
+            },
+            process.env.JWT_KEY,
+            {
+              // Tell how long token is valid
+              expiresIn: "1h",
+            }
+          );
+          return res.status(200).json({
+            Message: "Login successful",
+            Token: token,
+          });
+        }
+
+        // Passwords incorrect
+        res.status(401).json({
+          Message: "Password is incorrect",
+        });
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        Error: err,
+      });
     });
 });
 
