@@ -18,7 +18,11 @@ const file = fs.readFileSync(openApiPath, "utf-8");
 const swaggerDocument = yaml.parse(file);
 
 // Connect to mongodb with mongoose
-mongoose.connect(process.env.MONGO_URI);
+// mongoose.connect(process.env.MONGO_URI);
+const mongoDbName = process.env.MONGO_DB;
+const mongoUri = process.env.MONGO_URI + mongoDbName;
+
+mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Middleware
 app.use(express.json());
