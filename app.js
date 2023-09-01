@@ -42,7 +42,9 @@ app.use("/users", userRoutes);
 // ============================= LISTEN ===============================
 
 app.get("/", (req, res) => {
-  res.send("Welcome!");
+  res.send(
+    "Welcome! This is RESTful API Inventory Management System for Computer Store."
+  );
 });
 
 app.listen(port, () => {
