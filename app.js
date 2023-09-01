@@ -5,6 +5,7 @@ const app = express();
 const morgan = require("morgan"); // use morgan middleware for logging request & respond
 const { error } = require("console");
 const mongoose = require("mongoose");
+const databaseMiddleware = require("./middleware/databaseMiddleware");
 const productRoutes = require("./routes/product-routes");
 const orderRoutes = require("./routes/order-routes");
 const userRoutes = require("./routes/user-routes");
@@ -18,13 +19,14 @@ const file = fs.readFileSync(openApiPath, "utf-8");
 const swaggerDocument = yaml.parse(file);
 
 // Connect to mongodb with mongoose
-mongoose.connect(process.env.MONGO_URI);
+// mongoose.connect(process.env.MONGO_URI);
 // const mongoDbName = process.env.MONGO_DB;
 // const mongoUri = process.env.MONGO_URI + mongoDbName;
 // mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Middleware
 app.use(express.json());
+app.use(databaseMiddleware);
 app.use(morgan("dev"));
 app.use("/uploads", express.static("uploads"));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
