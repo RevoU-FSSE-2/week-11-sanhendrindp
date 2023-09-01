@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const checkAuth = require("../middleware/check-auth");
+const checkRole = require("../middleware/role-auth");
 const multer = require("multer");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -23,16 +24,22 @@ const {
 router.get("/", getAllProduct);
 
 // Route for create a product
-router.post("/", checkAuth, upload.single("productImage"), createProduct);
+router.post(
+  "/",
+  checkAuth,
+  checkRole(["admin", "user"]),
+  upload.single("productImage"),
+  createProduct
+);
 
 // Route for get a product by id
 router.get("/:id", getProduct);
 
 // Route for update a product
-router.patch("/:id", checkAuth, updateProduct);
+router.patch("/:id", checkAuth, checkRole(["admin", "user"]), updateProduct);
 
 // Route for delete a product
-router.delete("/:id", checkAuth, deleteProduct);
+router.delete("/:id", checkAuth, checkRole(["admin", "user"]), deleteProduct);
 
 // Export
 module.exports = router;
