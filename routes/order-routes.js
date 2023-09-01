@@ -2,10 +2,11 @@ const express = require("express");
 const router = express.Router();
 const Order = require("../models/order-model");
 const Product = require("../models/product-model");
+const checkAuth = require("../middleware/check-auth");
 const mongoose = require("mongoose");
 
 // Route for get all orders
-router.get("/", (req, res, next) => {
+router.get("/", checkAuth, (req, res, next) => {
   Order.find()
     .select("_id productId quantity")
     .exec()
@@ -38,7 +39,7 @@ router.get("/", (req, res, next) => {
 });
 
 // Route for create an order
-router.post("/", (req, res, next) => {
+router.post("/", checkAuth, (req, res, next) => {
   Product.findById(req.body.productId)
     .then((product) => {
       // If productId not exist, 404 not found (can't create order)
@@ -79,7 +80,7 @@ router.post("/", (req, res, next) => {
 });
 
 // Route for get an order by id
-router.get("/:id", (req, res, next) => {
+router.get("/:id", checkAuth, (req, res, next) => {
   const id = req.params.id;
 
   Order.findById(id)
@@ -118,7 +119,7 @@ router.get("/:id", (req, res, next) => {
 // });
 
 // Route for delete an order
-router.delete("/:id", (req, res, next) => {
+router.delete("/:id", checkAuth, (req, res, next) => {
   const id = req.params.id;
 
   Order.deleteOne({ _id: id })

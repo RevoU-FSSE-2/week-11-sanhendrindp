@@ -66,7 +66,7 @@ router.post("/login", (req, res, next) => {
         if (err) {
           // Error when password is compare
           return res.status(401).json({
-            Message: "Login failed. Email or password is incorrect",
+            Message: "Login failed",
           });
         }
 
