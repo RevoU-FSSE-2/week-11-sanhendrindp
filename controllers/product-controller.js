@@ -22,7 +22,7 @@ const getAllProduct = async (req, res, next) => {
             type: "GET",
             // url: "http://localhost:3000/products/" + doc._id,
             url:
-              "https://week-11-sanhendrindp-production.up.railway.app/products" +
+              "https://week-11-sanhendrindp-production.up.railway.app/products/" +
               doc._id,
           },
         };
@@ -69,7 +69,7 @@ const createProduct = async (req, res, next) => {
           type: "GET",
           // url: "http://localhost:3000/products/" + result._id,
           url:
-            "https://week-11-sanhendrindp-production.up.railway.app/products" +
+            "https://week-11-sanhendrindp-production.up.railway.app/products/" +
             result._id,
         },
       },
@@ -127,7 +127,7 @@ const updateProduct = async (req, res, next) => {
         type: "GET",
         // url: "http://localhost:3000/products/" + id,
         url:
-          "https://week-11-sanhendrindp-production.up.railway.app/products" +
+          "https://week-11-sanhendrindp-production.up.railway.app/products/" +
           id,
       },
     });

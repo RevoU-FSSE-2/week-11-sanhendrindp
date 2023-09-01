@@ -20,7 +20,7 @@ const getAllOrder = async (req, res, next) => {
             type: "GET",
             // url: "http://localhost:3000/orders/" + doc._id,
             url:
-              "https://week-11-sanhendrindp-production.up.railway.app/orders" +
+              "https://week-11-sanhendrindp-production.up.railway.app/orders/" +
               doc._id,
           },
         };
@@ -67,7 +67,7 @@ const createOrder = async (req, res, next) => {
           type: "GET",
           // url: "http://localhost:3000/orders/" + result._id,
           url:
-            "https://week-11-sanhendrindp-production.up.railway.app/orders" +
+            "https://week-11-sanhendrindp-production.up.railway.app/orders/" +
             result._id,
         },
       },
