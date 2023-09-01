@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const checkAuth = require("../middleware/check-auth");
 const {
   createUser,
   loginUser,
@@ -13,7 +14,7 @@ router.post("/signup", createUser);
 router.post("/login", loginUser);
 
 // Route for delete user
-router.delete("/:id", deleteUser);
+router.delete("/:id", checkAuth, deleteUser);
 
 // Export
 module.exports = router;
