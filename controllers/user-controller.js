@@ -19,6 +19,7 @@ const createUser = async (req, res, next) => {
       _id: new mongoose.Types.ObjectId(),
       email: req.body.email,
       password: hashedPassword,
+      role: req.body.role,
     });
 
     const result = await newUser.save();
@@ -54,6 +55,7 @@ const loginUser = async (req, res, next) => {
         {
           userId: user._id,
           email: user.email,
+          role: user.role,
         },
         process.env.JWT_KEY,
         {
