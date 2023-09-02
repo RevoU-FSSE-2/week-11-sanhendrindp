@@ -8,6 +8,13 @@ servers:
     description: For development server
   - url: https://week-11-sanhendrindp-production.up.railway.app/
     description: For public server
+components:
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Bearer with JWT token"
 paths:
   /:
     get:
@@ -75,6 +82,8 @@ paths:
           description: Auth failed
   /users/{id}:
     delete:
+      security:
+        - bearer: []
       summary: Delete a user by ID
       parameters:
         - in: path
@@ -132,6 +141,8 @@ paths:
                             url:
                               type: string
     post:
+      security:
+        - bearer: []
       summary: Create a product
       requestBody:
         required: true
@@ -212,6 +223,8 @@ paths:
         "404":
           description: No product found for provided ID
     patch:
+      security:
+        - bearer: []
       summary: Update a product by ID
       parameters:
         - in: path
@@ -248,6 +261,8 @@ paths:
                       url:
                         type: string
     delete:
+      security:
+        - bearer: []
       summary: Delete a product by ID
       parameters:
         - in: path
@@ -269,6 +284,8 @@ paths:
                     type: object
   /orders:
     get:
+      security:
+        - bearer: []
       summary: Get all orders
       responses:
         "200":
@@ -301,6 +318,8 @@ paths:
                             url:
                               type: string
     post:
+      security:
+        - bearer: []
       summary: Create an order
       requestBody:
         required: true
@@ -341,6 +360,8 @@ paths:
                             type: string
   /orders/{id}:
     get:
+      security:
+        - bearer: []
       summary: Get an order by ID
       parameters:
         - in: path
@@ -377,6 +398,8 @@ paths:
         "404":
           description: No order found for provided ID
     delete:
+      security:
+        - bearer: []
       summary: Delete an order by ID
       parameters:
         - in: path
