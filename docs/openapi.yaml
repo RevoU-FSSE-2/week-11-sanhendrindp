@@ -6,8 +6,8 @@ info:
 servers:
   - url: http://localhost:3000
     description: For development server
-  # - url: https://week-10-sanhendrindp-production.up.railway.app/
-  #   description: For public server
+  - url: https://week-11-sanhendrindp-production.up.railway.app/
+    description: For public server
 paths:
   /:
     get:
