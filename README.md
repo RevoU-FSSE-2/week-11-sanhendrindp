@@ -15,7 +15,7 @@ This project I created based on the shop's inventory management app where users 
 # API Routes in Details
 
 <p align="center">
-<img src="images/Detail REST API.png"> 
+<img src="images/Detail REST API v1.0.1.png"> 
 </p>
 
 1. **POST /users/signup** :
@@ -28,36 +28,39 @@ This project I created based on the shop's inventory management app where users 
 2. **POST /users/login** :
    When users login, it will generate a token that will be used to access other routes.
 
-3. **DELETE /users/:id** :
+3. **GET /users** :
+   Only can be access by admin to show all registered users, so admin can see their ID user that will be used to delete user request.
+
+4. **DELETE /users/:id** :
    Only can be access by admin to delete registered users.
 
-4. **GET /products** and **GET /products/:id** :
+5. **GET /products** and **GET /products/:id** :
    Can be access by anyone, even not registered user.
 
-5. **POST /products** :
+6. **POST /products** :
    To create a new product by input the name and price product.
 
    <p align="center">
     <img src="images/2.PNG"> 
     </p>
 
-6. **PATCH /products/:id** :
+7. **PATCH /products/:id** :
    To update product by using product ID.
 
-7. **DELETE /products/:id** :
+8. **DELETE /products/:id** :
    To delete product by using product ID.
 
-8. **GET /orders** and **GET /orders/:id** :
+9. **GET /orders** and **GET /orders/:id** :
    Different from GET products which can be access by anyone. To GET orders, users need to login.
 
-9. **POST /orders** :
-   To create a new order using product ID. Need to input product ID, and and quantity of products required.
+10. **POST /orders** :
+    To create a new order using product ID. Need to input product ID, and and quantity of products required.
 
-    <p align="center">
-    <img src="images/3.PNG"> 
-    </p>
+     <p align="center">
+     <img src="images/3.PNG"> 
+     </p>
 
-10. **DELETE /orders/:id** :
+11. **DELETE /orders/:id** :
     To delete order by using order ID.
 
 ---
