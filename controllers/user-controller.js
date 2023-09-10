@@ -80,6 +80,32 @@ const loginUser = async (req, res, next) => {
   }
 };
 
+const getUser = async (req, res, next) => {
+  try {
+    const users = await User.find().select("_id email role").exec();
+    console.log(users);
+
+    const response = {
+      Message: "Success get all users",
+      Count: users.length,
+      Users: users.map((user) => {
+        return {
+          _id: user._id,
+          email: user.email,
+          role: user.role,
+        };
+      }),
+    };
+
+    res.status(200).json(response);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      Error: err.message || "An error occurred while fetching users",
+    });
+  }
+};
+
 const deleteUser = async (req, res, next) => {
   try {
     const id = req.params.id;
@@ -104,4 +130,4 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
-module.exports = { createUser, loginUser, deleteUser };
+module.exports = { createUser, loginUser, deleteUser, getUser };

@@ -5,6 +5,7 @@ const checkRole = require("../middleware/role-auth");
 const {
   createUser,
   loginUser,
+  getUser,
   deleteUser,
 } = require("../controllers/user-controller");
 
@@ -13,6 +14,9 @@ router.post("/signup", createUser);
 
 // Route for login user
 router.post("/login", loginUser);
+
+// Route for get all user
+router.get("/", checkAuth, checkRole(["admin"]), getUser);
 
 // Route for delete user
 router.delete("/:id", checkAuth, checkRole(["admin"]), deleteUser);

@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: RESTful API Inventory Management System for Computer Store.
   description: This is mini project RevoU milestone 2. Created using NodeJs, ExpressJs, and MonggoDB.
-  version: 1.0.0
+  version: 1.0.1
 servers:
   - url: http://localhost:3000
     description: For development server
@@ -80,6 +80,34 @@ paths:
                     type: string
         "401":
           description: Auth failed
+  /users:
+    get:
+      security:
+        - bearer: []
+      summary: Get all users
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Message:
+                    type: string
+                  Count:
+                    type: integer
+                  Users:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                        email:
+                          type: string
+                        role:
+                          type: string
   /users/{id}:
     delete:
       security:
